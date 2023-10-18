@@ -1,0 +1,77 @@
+.formulaire{
+    height: 80%;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+
+    overflow: visible;
+}
+
+.textarea{
+    width: 75%;
+    height: 30%;
+
+    border: 2px solid white;
+    border-radius: 20px;
+
+    background: none;
+
+    color: white;
+    font-size: 1rem;
+    vertical-align: text-top;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    padding: 10px;
+
+}
+
+/* for custom input button */
+.file-input {
+    display: none;
+}
+
+.button-parcourir{
+    position: absolute;
+    bottom: -10%;
+    right: -5%;
+
+    z-index: 1;
+}
+
+/* first square */
+.viewPortImage{
+    overflow: visible;
+    width: 75%;
+    height: 30%;
+    /* background-color: red; */
+    border: 2px solid white;
+    border-radius: 20px;
+
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.viewportPhoto{
+    height: 100%;
+    width: auto;
+}
+
+
+.waitingPage{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+}

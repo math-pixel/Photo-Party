@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>video proj</title>
+    <link rel="stylesheet" href="styles/styleCommun.css">
+    <link rel="stylesheet" href="styles/styleVideoProj.css">
+</head>
+<body>
+
+    <div class="mainContainer">
+        <img src="" id="image" alt="" class="imageDifuse">
+        
+        <video id="parent-video" autoplay loop muted class="videoContainer">
+            <source id="video" class="src-video" src="">
+        </video>
+
+        <label for="" id="label" class="com"></label>
+    
+        <div class="container-logo">
+            <img src="" id="logo1" alt="" class="logo1">
+            <img src="" id="logo2" alt="" class="logo1">
+        </div>
+    </div>
+
+
+    <script>
+
+        // redimensionner la page
+        const windowInnerWidth  = window.innerWidth;
+        const windowInnerHeight = window.innerHeight;
+        document.body.style.width = windowInnerWidth + "px"
+        document.body.style.height = windowInnerHeight + "px"
+
+        const urlServer = "localhost"
+        const portHttp = ":5000"
+        const portws = ":8080"
+
+        const ws = new WebSocket(`ws://${urlServer + portws}`);
+
+        ws.addEventListener("open", () =>{
+          console.log("We are connected");
+          ws.send(JSON.stringify({requestImageVideoProj : true}));
+        });
+         
+        ws.addEventListener('message', function (event) {
+            console.log(event.data);
+            data = JSON.parse(event.data)
+
+            // verif que le message broadcast soit pour lui
+            if(data.projecteur){
+
+                // verif que il y ait une image
+                if (data.projecteur.image != undefined) {
+                    setUpFrame(data.projecteur)
+                }
+                // verif quil y ait des logo
+                else if(data.projecteur.pathLogo2 != undefined){
+                    setUpLogo(data.projecteur)
+                }
+            }
+        });
+
+        function setUpFrame(dataJson){
+ 
+            console.log(dataJson)
+            // * ########## set up video proj image et com ##########
+            let image = dataJson.image
+            let com = dataJson.commentaire
+            
+            let imageBalise = document.querySelector("#image")
+            let videoPlayer = document.querySelector("#parent-video")
+
+            //! si l'image actuelle n'est pas l'image representant qu'il n'y a pas d'image
+            if (!image.includes("erreurFile")) {
+                
+                // * gestion d'erreur
+                if (image != undefined) {
+
+
+                    //TODO get orientaion image into the db
+
+
+
+                    // verif si cest une image ou une video
+                    if (image.includes("mp4")) {
+    
+                        videoPlayer.classList.remove("disable")
+                        imageBalise.classList.add("disable")
+    
+                        videoPlayer.pause()
+                        videoPlayer.setAttribute("src", `http://${urlServer + portHttp}${image}`)
+                        videoPlayer.load()
+                        videoPlayer.play()
+                    }else{
+    
+                        imageBalise.classList.remove("disable")
+                        videoPlayer.classList.add("disable")
+    
+    
+                        imageBalise.setAttribute("src", `http://${urlServer + portHttp}${image}`)
+                    }
+                }else{
+                    imageBalise.setAttribute("src", null)
+                }
+
+                document.querySelector("label").style.top = "20px"
+
+            }else{
+                // si il n'y a pas d'image alors remove celle actuellement
+                imageBalise.setAttribute("src", "")
+
+                videoPlayer.pause()
+                videoPlayer.setAttribute("src", "")
+
+
+                document.querySelector("label").style.top = "45%"
+            }
+    
+            // set up le commentaire
+            if (com != undefined) {
+
+                if (com == "remove ui") {
+                    document.querySelector("#logo1").style.opacity = 0
+                    document.querySelector("#logo2").style.opacity = 0
+                    document.querySelector("#label").style.opacity = 0
+                }else{
+                    document.querySelector("#logo1").style.opacity = 1
+                    document.querySelector("#logo2").style.opacity = 1
+                    document.querySelector("#label").style.opacity = 1
+
+                    document.querySelector("#label").innerHTML = com
+                }
+
+            }
+    
+
+            // // * ########## set up with panel admin ##########
+            // let pathLogo1 = dataJson.pathLogo1
+            // let pathLogo2 = dataJson.pathLogo2
+
+            // if (pathLogo1 != undefined) {
+            //     document.querySelector("#logo1").setAttribute("src", `http://${urlServer + portHttp}${pathLogo1}`)
+            // }
+            // if (pathLogo2 != undefined) {
+            //     document.querySelector("#logo2").setAttribute("src", `http://${urlServer + portHttp}${pathLogo2}`)
+            // }
+        
+
+
+        }
+
+        function setUpLogo(data){
+            let date = new Date();
+            document.querySelector("#logo1").setAttribute("src", "http://" + urlServer + portHttp + data.pathLogo1 + "?" + date)
+            document.querySelector("#logo2").setAttribute("src", "http://" + urlServer + portHttp + data.pathLogo2 + "?" + date)
+            // console.log("http://" + urlServer + portHttp + data.pathLogo1 + "?" + date)
+        }
+
+
+        function isPortrait(img) {
+            var w = img.naturalWidth || img.width,
+            h = img.naturalHeight || img.height;
+            return (h > w);
+        }
+
+    </script>
+</body>
+</html>
