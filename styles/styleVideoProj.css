@@ -90,6 +90,7 @@
 
 .containerQr label{
     font-size: 1.3vw;
+    max-width: 20%;
 }
 
 .mdp{
@@ -98,14 +99,9 @@
     width: fit-content;
 }
 
-.toto{
-    background-color: #ff0000;
-    width: 100vw;
-    height: 20px;
-
-    text-align: center;
-
-    position: absolute;
-    top: 0;
-    left: 0;
+.lighting{
+    background-color: #00ccffc3;
+    border-radius: 3px;
+    padding: 2px 5px;
+    width: fit-content;
 }
