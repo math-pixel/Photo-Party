@@ -52,13 +52,13 @@
         
         <form action="/importingFile" method="post" id="importingFile" enctype="multipart/form-data" class="formulaire">
             
-            <div class="viewPortImage" onclick="document.getElementById('file').click()">
+            <div class="viewPortImage">
                 <img class="viewportPhoto" id="viewportPhoto"></img>
 
                 <video class="viewportPhoto" id="viewportVideo" muted></video>
 
-                <input type="file" class="file-input" onchange="readURL(this);" name="image" id="file" accept="image/*, video/*" size="15 583 766">
-                <Label class="button button-parcourir" for="file">Parcourir</Label>
+                <label class="button button-parcourir" for="file">Parcourir</label>
+                <input type="file" class="file-input" onchange="readURL(this);" name="image" id="file" accept="image/*, video/*">
             </div>
 
             <!-- <div class="commentaire-input">
