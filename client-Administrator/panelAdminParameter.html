@@ -70,7 +70,7 @@
                             <p>Logo 1 :</p>
                             <input type="file" onchange="readURL(this, '#imageLogo1');" id="inputLogo1" name="logo1" style="opacity: 0; width: 0; height: 0;"> 
                             <label for="inputLogo1" class="button labelParcourir" >Parcourir...</label>
-                            <button onclick="deleteImage('1')" class="button labelParcourir">Delete Image 1</button>
+                            <button onclick="deleteImage('1')" type="button" class="button labelParcourir">Delete Image 1</button>
                         </div>
                         <img src="" id="imageLogo1" alt="" class="imageView">
                     </div>
@@ -81,7 +81,7 @@
                             <p>Logo 2 :</p>
                             <input type="file" onchange="readURL(this, '#imageLogo2');" id="inputLogo2" name="logo2" style="opacity: 0; width: 0; height: 0;">
                             <label for="inputLogo2" class="button labelParcourir">Parcourir...</label>
-                            <button onclick="deleteImage('2')" class="button labelParcourir">Delete Image 2</button>
+                            <button onclick="deleteImage('2')" type="button" class="button labelParcourir">Delete Image 2</button>
                         </div>
                         <img src="" id="imageLogo2" alt="" class="imageView">
                     </div>
@@ -121,7 +121,7 @@
     document.body.style.width = windowInnerWidth + "px"
     document.body.style.height = windowInnerHeight + "px"
 
-    const urlServer = "localhost"
+    const urlServer = "192.168.1.19"
     const portHttp = ":5000"
     const portws = ":8080"
 
@@ -143,10 +143,10 @@
                 setUp(data.adminPanel.setUpAdminParameter[0])
             }
             else if (data.adminPanel.downloadImages) {
-                window.open(`http://${urlServer}:${portHttp}/files/photos.zip`)
+                window.open(`http://${urlServer}${portHttp}/files/photos.zip`)
             }
             else if(data.adminPanel.downloadMail){
-                window.open(`http://${urlServer}:${portHttp}/files/mailing.csv`)
+                window.open(`http://${urlServer}${portHttp}/files/mailing.csv`)
             }
             else if(data.adminPanel.alertErrorDeleteMail){
                 alert("tu doit d'abord supprimer toute les images si tu veux supprimer les mails")
@@ -216,6 +216,7 @@
     })
 
     function fnExport(object){
+        alert("En cour de preparation ...")
         switch (object) {
             case "email":
                 ws.send(JSON.stringify({requestExportEmail : true}))
