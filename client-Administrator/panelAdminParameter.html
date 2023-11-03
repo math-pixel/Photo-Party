@@ -143,10 +143,10 @@
                 setUp(data.adminPanel.setUpAdminParameter[0])
             }
             else if (data.adminPanel.downloadImages) {
-                window.open("http://localhost:5000/files/photos.zip")
+                window.open(`http://${urlServer}:${portHttp}/files/photos.zip`)
             }
             else if(data.adminPanel.downloadMail){
-                window.open("http://localhost:5000/files/mailing.csv")
+                window.open(`http://${urlServer}:${portHttp}/files/mailing.csv`)
             }
             else if(data.adminPanel.alertErrorDeleteMail){
                 alert("tu doit d'abord supprimer toute les images si tu veux supprimer les mails")
