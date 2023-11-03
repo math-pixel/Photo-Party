@@ -1,4 +1,6 @@
 {
+    "usernameAdmin" : "a",
+    "passwordAdmin" : "a",
     "timeoutImageInformation" : 7000,
-    "nbImageBeforeImageInformation" : 10
+    "nbImageBeforeImageInformation" : 0
 }

@@ -23,9 +23,8 @@ let query = "";
 let queueId = [];
 let loopMessageTimer;
 
-// TODO change admin password
-let adminName = "a"
-let adminMDP = "a"
+let adminName = config.usernameAdmin
+let adminMDP = config.passwordAdmin
 
 let isAllowGlobal = true
 let isWaitingGlobal = false
@@ -644,7 +643,7 @@ function loopMessage(){
     // set timer pour envoyer les data au video proj
     loopMessageTimer = setTimeout(() => {
 
-      if (nbImageDifuse === config.nbImageBeforeImageInformation) {
+      if (nbImageDifuse === config.nbImageBeforeImageInformation && config.nbImageBeforeImageInformation != 0) {
         // * diffusion image inscription
         sendConnectionImageToProjo()
         nbImageDifuse = 0
