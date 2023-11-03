@@ -101,7 +101,7 @@ wss.on("connection", webso => {
           con.query("SELECT * FROM `photos` WHERE 1", function (err, result, fields) {
             // write error in logfile
             if (err){
-              fs.writeFile("log.txt", err)
+              // fs.writeFile("log.txt", err)
             }else{
               result = JSON.stringify(result)
               sendImageDataToAdminPanel(result)
@@ -115,7 +115,7 @@ wss.on("connection", webso => {
           con.query("SELECT * FROM `adminparameter` WHERE 1", function (err, result, fields) {
             // write error in logfile
             if (err){
-              fs.writeFile("log.txt", err)
+              // fs.writeFile("log.txt", err)
             }else{
               result = JSON.stringify(result)
               sendParameterDataToAdminPanel(result)
@@ -132,7 +132,7 @@ wss.on("connection", webso => {
           con.query(`UPDATE \`photos\` SET \`is_allowed\`=${value} WHERE \`photo_id\` = ${idRow}`, function (err, result, fields) {
             // write error in logfile
             if (err){
-              fs.writeFile("log.txt", err)
+              // fs.writeFile("log.txt", err)
             }
           })
         }
@@ -150,7 +150,7 @@ wss.on("connection", webso => {
           con.query(`UPDATE \`photos\` SET \`is_waiting\`=0 WHERE \`photo_id\` = ${idRow}`, function (err, result, fields) {
             // write error in logfile
             if (err){
-              fs.writeFile("log.txt", err)
+              // fs.writeFile("log.txt", err)
             }
           })
 
@@ -158,7 +158,7 @@ wss.on("connection", webso => {
           con.query(`SELECT \`is_allowed\` FROM \`photos\` WHERE \`photo_id\` = ${idRow}`, (err, result, fields) => {
             // write error in logfile
             if (err){
-              fs.writeFile("log.txt", err)
+              // fs.writeFile("log.txt", err)
             }else{
               // console.log("is allow" , result[0].is_allowed)
               if ( result[0].is_allowed == 1 ) {
@@ -356,21 +356,21 @@ app.post('/importingFile', (req , res) => {
   con.query(query, function (err, result, fields) {
     // write error in logfile
     if (err){
-      fs.writeFile("log.txt", err)
+      // fs.writeFile("log.txt", err)
       res.redirect(307, "/")
     }else{
       //? else not error
       
       
-      //* ############### if client exist ##############
+      //! ############### if client exist ##############
       if(result[0] != undefined){
         clientId = result[0].users_id
         // console.log("client id : ", clientId)
 
-        //* ############### redirection ###############
+        //* ############### good redirection ###############
         res.redirect(307, "app")
 
-        //* ############### si il y a une image enregistre limage ###############
+        //* ############### if image save it on server ###############
         if(!(req.files == null)){
           // Get the file that was set to our field named "image"
           const { image } = req.files;
@@ -379,12 +379,20 @@ app.post('/importingFile', (req , res) => {
           pathCurrentImage =  '/PhotoUpload/' + Date.now() + image.name
           image.mv(__dirname + pathCurrentImage);
         }else{
+
+          //? ############### else save path image error ###############
+
           pathCurrentImage = '/PhotoUploadAdmin/erreurFile.svg'
         }
 
-        //* ############### si il y a un commentaire ###############
+        //* ############### if comment save it ###############
+        // remove empty space for test empty
         if(req.body.comment.replace(/\s/g, '') != ""){
+
           commentaire = req.body.comment
+
+          // replace comm for sql error
+          commentaire.replace("'", '\'')
         }
 
 
@@ -397,11 +405,11 @@ app.post('/importingFile', (req , res) => {
           
 
           // * ############### insert file in db ###############
-          query = creationQuery.insertQuery("photos",  "`user_id`, `media`, `commentary`, `is_allowed`, `is_waiting`" , `${clientId}, "${pathCurrentImage}", "${commentaire}", ${isAllowGlobal}, ${isWaitingGlobal}`)
+          query = creationQuery.insertQuery("photos",  "`user_id`, `media`, `commentary`, `is_allowed`, `is_waiting`" , `${clientId}, '${pathCurrentImage}', '${commentaire}', ${isAllowGlobal}, ${isWaitingGlobal}`)
           con.query(query, function (err, result, fields) {
             // write error in logfile
             if (err){
-              fs.writeFile("log.txt", err)
+              // fs.writeFile("/log.txt", err)
               // res.redirect(307, "/")
             }else{
 
@@ -412,7 +420,7 @@ app.post('/importingFile', (req , res) => {
               con.query("SELECT `administration_before` FROM `adminparameter` WHERE `id_adminparameter` = 1", (err, result, fields) => {
                 
                 // write error if needed
-                if (err) {fs.writeFile("log.txt", err)};
+                // if (err) {fs.writeFile("/log.txt", err)};
                 // console.log("admin before " , result[0].administration_before)
                 // ? si il ny a pas daministration avant alors ajoute la photo
                 if ( result[0].administration_before == 0 ) {
@@ -446,7 +454,7 @@ app.post('/importingFile', (req , res) => {
         //* ############### redirect to error client page ###############
         // res.json({"error": "you have not an account"})
         res.redirect("/")
-        fs.writeFile("log.txt", "no compte")
+        // fs.writeFile("/log.txt", "no compte")
 
       }
     }
