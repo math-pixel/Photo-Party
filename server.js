@@ -9,6 +9,7 @@ const mysql = require('mysql');
 const creationQuery = require("./database")
 const fastcsv = require("fast-csv");
 const fs = require("fs");
+const config = require("./config.json")
 
 // ? pour exporter les email en csv
 const writeStream = fs.createWriteStream("./files/mailing.csv");
@@ -98,9 +99,13 @@ wss.on("connection", webso => {
         if(data.requestImage == true){ 
           // * ############### get all image info and send it to admin panel ###############
           con.query("SELECT * FROM `photos` WHERE 1", function (err, result, fields) {
-            if (err) throw err;
-            result = JSON.stringify(result)
-            sendImageDataToAdminPanel(result)
+            // write error in logfile
+            if (err){
+              fs.writeFile("log.txt", err)
+            }else{
+              result = JSON.stringify(result)
+              sendImageDataToAdminPanel(result)
+            }
           })
         }
 
@@ -108,9 +113,13 @@ wss.on("connection", webso => {
         else if(data.requestAdminParameter == true){
           // * ############### get all info parameter and send it to admin panel parameter ###############
           con.query("SELECT * FROM `adminparameter` WHERE 1", function (err, result, fields) {
-            if (err) throw err;
-            result = JSON.stringify(result)
-            sendParameterDataToAdminPanel(result)
+            // write error in logfile
+            if (err){
+              fs.writeFile("log.txt", err)
+            }else{
+              result = JSON.stringify(result)
+              sendParameterDataToAdminPanel(result)
+            }
           })
         }
 
@@ -121,7 +130,10 @@ wss.on("connection", webso => {
           let value = data.changeAllowValue.value
 
           con.query(`UPDATE \`photos\` SET \`is_allowed\`=${value} WHERE \`photo_id\` = ${idRow}`, function (err, result, fields) {
-            if (err) throw err;
+            // write error in logfile
+            if (err){
+              fs.writeFile("log.txt", err)
+            }
           })
         }
 
@@ -136,15 +148,22 @@ wss.on("connection", webso => {
 
           // ? enlever le is waiting de la photo dans la db
           con.query(`UPDATE \`photos\` SET \`is_waiting\`=0 WHERE \`photo_id\` = ${idRow}`, function (err, result, fields) {
-            if (err) throw err;
+            // write error in logfile
+            if (err){
+              fs.writeFile("log.txt", err)
+            }
           })
 
           // ? recuperer si la photo est allow apres lavoir enregistrer dans la db savoir si elle doit passer
           con.query(`SELECT \`is_allowed\` FROM \`photos\` WHERE \`photo_id\` = ${idRow}`, (err, result, fields) => {
-            if (err) throw err;
-            // console.log("is allow" , result[0].is_allowed)
-            if ( result[0].is_allowed == 1 ) {
-              queueId.push(idRow)
+            // write error in logfile
+            if (err){
+              fs.writeFile("log.txt", err)
+            }else{
+              // console.log("is allow" , result[0].is_allowed)
+              if ( result[0].is_allowed == 1 ) {
+                queueId.push(idRow)
+              }
             }
           })
 
@@ -285,7 +304,9 @@ app.post('/app', function(req, res) {
   // verif if the user is in db
   query = creationQuery.selectQuery("users", "1", ` \`email\` = '${email}' `)
   con.query(query, function (err, result, fields) {
-        if (err) throw err;
+        if (err){
+          res.redirect("/")
+        };
         
         //* ##### if is already in db #####
         if(result[0] != undefined){
@@ -294,8 +315,10 @@ app.post('/app', function(req, res) {
 
           query = creationQuery.updateQuery("users",  `  \`pseudo\` = "${name}"  ` , ` \`email\` = "${email}" `)
           con.query(query, function (err, result, fields) {
-              if (err) throw err;
-              // console.log(result);
+            if (err){
+              res.redirect("/")
+            };
+            // console.log(result);
           });
 
         }else{
@@ -304,8 +327,10 @@ app.post('/app', function(req, res) {
 
           query = creationQuery.insertQuery("users",  "`pseudo`, `email`" , `"${name}", "${email}"`)
           con.query(query, function (err, result, fields) {
-              if (err) throw err;
-              // console.log(result);
+            if (err){
+              res.redirect("/")
+            };
+            // console.log(result);
           });
 
         }
@@ -329,91 +354,102 @@ app.post('/importingFile', (req , res) => {
   // * ############### get user info ###############
   query = creationQuery.selectQuery("users", "`users_id`", `\`email\`='${emailClient}' `)
   con.query(query, function (err, result, fields) {
-    // if (err) throw err;
-    
-    //* ############### if client exist ##############
-    if(result[0] != undefined){
-      clientId = result[0].users_id
-      // console.log("client id : ", clientId)
+    // write error in logfile
+    if (err){
+      fs.writeFile("log.txt", err)
+      res.redirect(307, "/")
+    }else{
+      //? else not error
+      
+      
+      //* ############### if client exist ##############
+      if(result[0] != undefined){
+        clientId = result[0].users_id
+        // console.log("client id : ", clientId)
 
-      //* ############### redirection ###############
-      res.redirect(307, "app")
+        //* ############### redirection ###############
+        res.redirect(307, "app")
 
-      //* ############### si il y a une image enregistre limage ###############
-      //TODO get orientation image
-      if(!(req.files == null)){
-        // Get the file that was set to our field named "image"
-        const { image } = req.files;
-        
-        // Move the uploaded image to our upload folder
-        pathCurrentImage =  '/PhotoUpload/' + Date.now() + image.name
-        image.mv(__dirname + pathCurrentImage);
-      }else{
-        pathCurrentImage = '/PhotoUploadAdmin/erreurFile.svg'
-      }
+        //* ############### si il y a une image enregistre limage ###############
+        if(!(req.files == null)){
+          // Get the file that was set to our field named "image"
+          const { image } = req.files;
+          
+          // Move the uploaded image to our upload folder
+          pathCurrentImage =  '/PhotoUpload/' + Date.now() + image.name
+          image.mv(__dirname + pathCurrentImage);
+        }else{
+          pathCurrentImage = '/PhotoUploadAdmin/erreurFile.svg'
+        }
 
-      //* ############### si il y a un commentaire ###############
-      if(req.body.comment.replace(/\s/g, '') != ""){
-        commentaire = req.body.comment
-      }
-
+        //* ############### si il y a un commentaire ###############
+        if(req.body.comment.replace(/\s/g, '') != ""){
+          commentaire = req.body.comment
+        }
 
 
-      // * ############### if there is not empty media or com ###############
-      // console.log(req.body.comment)
-      // console.log(req.body.comment.replace(/\s/g, '') != "" || !(req.files == null), req.body.comment != undefined )
-      if (req.body.comment.replace(/\s/g, '') != "" || !(req.files == null)) {
 
-        
+        // * ############### if there is not empty media or com ###############
+        // console.log(req.body.comment)
+        // console.log(req.body.comment.replace(/\s/g, '') != "" || !(req.files == null), req.body.comment != undefined )
+        if (req.body.comment.replace(/\s/g, '') != "" || !(req.files == null)) {
 
-        // * ############### insert file in db ###############
-        //TODO ajouter l orientation a la db
-        query = creationQuery.insertQuery("photos",  "`user_id`, `media`, `commentary`, `is_allowed`, `is_waiting`" , `${clientId}, "${pathCurrentImage}", "${commentaire}", ${isAllowGlobal}, ${isWaitingGlobal}`)
-        con.query(query, function (err, result, fields) {
-          if (err) throw err;
-
-          // * ############### add ( id row ) in queue to diffuse them if is not admin before ###############
-          let idPhoto = result.insertId
-          //? get admin before boolean
-          con.query("SELECT `administration_before` FROM `adminparameter` WHERE `id_adminparameter` = 1", (err, result, fields) => {
-            if (err) throw err;
-            // console.log("admin before " , result[0].administration_before)
-            // ? si il ny a pas daministration avant alors ajoute la photo
-            if ( result[0].administration_before == 0 ) {
-              queueId.push(idPhoto)
-            }
-          })
           
 
-          // * ############### send image to admin panel ###############
-          let arrayData = [
-            {"photo_id":result.insertId,
-            "user_id":clientId,
-            "media":pathCurrentImage,
-            "commentary":commentaire,
-            "is_allowed":isAllowGlobal,
-            "is_waiting": isWaitingGlobal
-          }]
-          arrayData = JSON.stringify(arrayData)
+          // * ############### insert file in db ###############
+          query = creationQuery.insertQuery("photos",  "`user_id`, `media`, `commentary`, `is_allowed`, `is_waiting`" , `${clientId}, "${pathCurrentImage}", "${commentaire}", ${isAllowGlobal}, ${isWaitingGlobal}`)
+          con.query(query, function (err, result, fields) {
+            // write error in logfile
+            if (err){
+              fs.writeFile("log.txt", err)
+              // res.redirect(307, "/")
+            }else{
 
-          sendImageDataToAdminPanel(arrayData) 
+  
+              // * ############### add ( id row ) in queue to diffuse them if is not admin before ###############
+              let idPhoto = result.insertId
+              //? get admin before boolean
+              con.query("SELECT `administration_before` FROM `adminparameter` WHERE `id_adminparameter` = 1", (err, result, fields) => {
+                
+                // write error if needed
+                if (err) {fs.writeFile("log.txt", err)};
+                // console.log("admin before " , result[0].administration_before)
+                // ? si il ny a pas daministration avant alors ajoute la photo
+                if ( result[0].administration_before == 0 ) {
+                  queueId.push(idPhoto)
+                }
+              })
+              
+  
+              // * ############### send image to admin panel ###############
+              let arrayData = [
+                {"photo_id":result.insertId,
+                "user_id":clientId,
+                "media":pathCurrentImage,
+                "commentary":commentaire,
+                "is_allowed":isAllowGlobal,
+                "is_waiting": isWaitingGlobal
+              }]
+              arrayData = JSON.stringify(arrayData)
+  
+              sendImageDataToAdminPanel(arrayData) 
 
-        });
+            }              
+          });
 
+        }
+
+
+
+      }else{
+
+        //* ############### redirect to error client page ###############
+        // res.json({"error": "you have not an account"})
+        res.redirect("/")
+        fs.writeFile("log.txt", "no compte")
 
       }
-
-
-
-    }else{
-
-      //* ############### redirect to error client page ###############
-      // res.json({"error": "you have not an account"})
-      res.redirect("/")
-      console.log("pas de compte")
-
     }
-
   });
 })
 
@@ -517,9 +553,7 @@ app.post("/admistration", (req,res) => {
         }
 
       })
-
-
-
+      
       // send message websocket to projecteur to update image
       sendImageToProjecteur()
     } 
@@ -562,7 +596,7 @@ function sendImageToProjecteur(){
   
   con.query("SELECT * FROM `adminparameter` WHERE 1", function (err, result, fields) {
   
-    // console.log(result)
+    console.log(result)
     sendMessageWebso(`
     { "projecteur" :
       {
@@ -602,7 +636,7 @@ function loopMessage(){
     // set timer pour envoyer les data au video proj
     loopMessageTimer = setTimeout(() => {
 
-      if (nbImageDifuse === 3) {
+      if (nbImageDifuse === config.nbImageBeforeImageInformation) {
         // * diffusion image inscription
         sendConnectionImageToProjo()
         nbImageDifuse = 0
@@ -626,7 +660,7 @@ function loopMessage(){
       clearTimeout(loopMessageTimer)
       loopMessage()
 
-    }, 2000);
+    }, config.timeoutImageInformation);
     
 }
 
