@@ -6,13 +6,14 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const AdmZip = require("adm-zip");
 const mysql = require('mysql'); 
-const creationQuery = require("./database")
 const fastcsv = require("fast-csv");
 const fs = require("fs");
-const config = require("./config.json")
+const creationQuery = require( __dirname + "/database")
+const config = require(__dirname + "/config.json")
 
+// console.log(__dirname)
 // ? pour exporter les email en csv
-const writeStream = fs.createWriteStream("./files/mailing.csv");
+const writeStream = fs.createWriteStream( __dirname + "/files/mailing.csv");
 // ? lib pour suppr tout les fichier d'un dossier
 const fsExtra = require('fs-extra')
 
@@ -36,10 +37,10 @@ app.use(fileUpload());
 
 // pour avoir access au image directement depuis le web
 app.use(express.static('public'));
-app.use('/PhotoUpload', express.static('PhotoUpload'));
-app.use('/PhotoUploadAdmin', express.static('PhotoUploadAdmin'));
-app.use('/files', express.static('files'));
-app.use('/styles', express.static('styles'));
+app.use('/PhotoUpload', express.static(__dirname + '/PhotoUpload'));
+app.use('/PhotoUploadAdmin', express.static(__dirname + '/PhotoUploadAdmin'));
+app.use('/files', express.static(__dirname + '/files'));
+app.use('/styles', express.static(__dirname + '/styles'));
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
@@ -193,7 +194,7 @@ wss.on("connection", webso => {
         else if (data.requestDeletePhoto) {
           
           //? delete in folder
-          setEmptyDir("./PhotoUpload")
+          setEmptyDir( __dirname + "/PhotoUpload")
 
           // ? in db
           con.query("DELETE FROM `photos` WHERE 1", (error, data, field) => {
@@ -242,8 +243,8 @@ function sendMessageWebso(message){
 async function createZipArchive() {
   try {
     const zip = new AdmZip();
-    const outputFile = "./files/photos.zip";
-    zip.addLocalFolder("./PhotoUpload");
+    const outputFile = __dirname + "/files/photos.zip";
+    zip.addLocalFolder( __dirname + "/PhotoUpload");
     zip.writeZip(outputFile);
     console.log(`Created ${outputFile} successfully`);
   } catch (e) {
