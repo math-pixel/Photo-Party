@@ -237,11 +237,12 @@
         switch (object) {
             case "email":
                 ws.send(JSON.stringify({requestDeleteEmail : true}))
+                alert("Email Effacé")
                 break;
 
             case "photo":
                 ws.send(JSON.stringify({requestDeletePhoto : true}))
-                // console.log("ok")
+                alert("Photo Effacé")
                 break;
         
             default:
