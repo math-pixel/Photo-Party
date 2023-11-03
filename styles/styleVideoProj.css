@@ -1,9 +1,14 @@
+.mainContainer{
+    background-color: black;
+}
+
 .disable{
     display: none;
 }
 
 .imageDifuse{
-    /* height: 100%; */
+    height: 95%;
+    max-width: 90%;
     object-fit: contain;
 }
 
@@ -30,7 +35,11 @@
     align-content: center;
 
     max-height: 50%;
-    max-width: 20%;
+    max-width: 10%;
+
+    /* background-color: #00000090; */
+    padding: 15px 5px;
+    border-radius: 15px;
 }
 
 .logo1, .logo2{
@@ -51,10 +60,52 @@
     top: 20px;
     left: 20%;
 
-    text-shadow: 2px 1px 1px #1e23a5;
+    /* text-shadow: 2px 1px 1px #1e23a5; */
 
     /* padding: 5px 10px; */
     border-radius: 15px;
 
     font-family: degular-display, sans-serif;
+
+    z-index: 100;
+}
+
+.containerQr{
+    display: flex;
+    justify-content: start;
+    align-content: space-between;
+    flex-direction: column;
+    
+    position: absolute;
+    left: 0;
+    bottom: 2%;
+    z-index: 100;
+}
+
+.containerQr img{
+    max-width: 15%;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.containerQr label{
+    font-size: 1.3vw;
+}
+
+.mdp{
+    background-color: #ff000080;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.toto{
+    background-color: #ff0000;
+    width: 100vw;
+    height: 20px;
+
+    text-align: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
 }
