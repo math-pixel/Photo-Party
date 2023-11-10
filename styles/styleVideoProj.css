@@ -1,3 +1,8 @@
+body{
+    cursor: none;
+    background-color: black;
+}
+
 .mainContainer{
     background-color: black;
 }
@@ -80,17 +85,21 @@
     left: 0;
     bottom: 2%;
     z-index: 100;
+    margin-left: 20px;
 }
 
 .containerQr img{
-    max-width: 15%;
+    /* max-width: 15%; */
+    width: 55%;
     background-color: white;
     border-radius: 10px;
+    border: 5px solid aliceblue;
 }
 
 .containerQr label{
     font-size: 1.3vw;
-    max-width: 20%;
+    max-width: 60%;
+    margin-bottom: 5px;
 }
 
 .mdp{
@@ -104,4 +113,6 @@
     border-radius: 3px;
     padding: 2px 5px;
     width: fit-content;
+    margin-top: 3px;
+    margin-bottom: 5px;
 }
