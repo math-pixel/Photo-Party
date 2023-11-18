@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const fastcsv = require("fast-csv");
 const fs = require("fs");
 const creationQuery = require( __dirname + "/database")
-const config = require(__dirname + "/config.json")
+const config = require(__dirname + "/public/config.json")
 
 // console.log(__dirname)
 // ? pour exporter les email en csv
@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 // pour avoir access au image directement depuis le web
-app.use(express.static('public'));
+app.use('/', express.static('public'));
 app.use('/PhotoUpload', express.static(__dirname + '/PhotoUpload'));
 app.use('/PhotoUploadAdmin', express.static(__dirname + '/PhotoUploadAdmin'));
 app.use('/files', express.static(__dirname + '/files'));
