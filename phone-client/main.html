@@ -58,7 +58,7 @@
                 <video class="viewportPhoto" id="viewportVideo" muted></video>
 
                 <label class="button button-parcourir" for="file">Parcourir</label>
-                <input type="file" class="file-input" onchange="readURL(this);" name="image" id="file" accept="image/*, video/*">
+                <input type="file" class="file-input" onchange="readURL(this);" name="image" id="file" accept="image/*">
             </div>
 
             <!-- <div class="commentaire-input">
@@ -77,11 +77,16 @@
     </div>
     <script>
 
-        // let formulaire = document.querySelector("#importingFile")
-        // let globalImage = null 
+// TRY TO GET JSON 
+        // async function loadJson(){
+        //     const response = await fetch('/config.json', {
+        //         method: 'GET'
+        //     }).then((res) => {
 
-        // const request = new XMLHttpRequest();
-        // const formData = new FormData(formulaire);
+        //         console.log(res)
+        //     });
+
+        // }
 
         // affiche limage qui vas etre envoyer
         function readURL(input) {
@@ -105,11 +110,12 @@
                         video.style.display = "none"
                         image.style.display = "block"
                     }else{
-                        video.setAttribute("src", globalMedia )
-                        video.play()
+                        alert("Le media selectionné n'est pas une photo")
+                        // video.setAttribute("src", globalMedia )
+                        // video.play()
 
-                        video.style.display = "block"
-                        image.style.display = "none"
+                        // video.style.display = "block"
+                        // image.style.display = "none"
                     }
 
                     console.log(globalMedia, typeMedia[0])
