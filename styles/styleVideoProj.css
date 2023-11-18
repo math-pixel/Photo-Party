@@ -29,12 +29,9 @@ body{
 }
 
 .container-logo{
-    z-index: 20;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    
 
-    display: flex;
+    /* display: flex;
     flex-direction: column-reverse;
     justify-content: center;
     align-content: center;
@@ -42,17 +39,42 @@ body{
     max-height: 50%;
     max-width: 10%;
 
-    /* background-color: #00000090; */
+     background-color: #00000090; 
     padding: 15px 5px;
-    border-radius: 15px;
+    border-radius: 15px; */
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
 }
 
-.logo1, .logo2{
+/* .logo1, .logo2{
     padding: 1px;
      object-fit: contain;
      object-position: right;
     /*max-height: 45%;
-    max-width: 100%; */
+    max-width: 100%; 
+} */
+
+.logo1{
+    z-index: 20;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    max-height: 50%;
+    max-width: 10%;
+}
+
+.logo2{
+    z-index: 20;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    max-height: 50%;
+    max-width: 10%;
 }
 
 .com{
