@@ -7,13 +7,25 @@ body{
     padding: 10px 0;
 }
 
-.return{
+.returnContainer{
     position: absolute;
     top: 10px;
     left: 10px;
 
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.return{
+    
+
     width: 35px;
     height: 50px;
+
+    /* for correctly centrate */
+    margin-top: 4px;
 
     background: none;
     border: none;
@@ -25,6 +37,7 @@ body{
 
     pointer-events: visiblePainted;
 }
+
 
 
 .mainContainer{
