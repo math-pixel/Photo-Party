@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdminParameter</title>
+    <title>Parametres-Administrations</title>
     <link rel="stylesheet" href="styles/styleCommun.css">
     <link rel="stylesheet" href="styles/styleAdminPanelParameter.css">
     <link rel="icon" type="image/x-icon" href="/files/favicon.png">
@@ -71,7 +71,7 @@
                             <p>Logo 1 :</p>
                             <input type="file" onchange="readURL(this, '#imageLogo1');" id="inputLogo1" name="logo1" style="opacity: 0; width: 0; height: 0;"> 
                             <label for="inputLogo1" class="button labelParcourir" >Parcourir...</label>
-                            <button onclick="deleteImage('1')" type="button" class="button labelParcourir">Delete Image 1</button>
+                            <button onclick="deleteImage('1')" type="button" class="button labelParcourir">Effacer Image 1</button>
                         </div>
                         <img src="" id="imageLogo1" alt="" class="imageView">
                     </div>
@@ -82,7 +82,7 @@
                             <p>Logo 2 :</p>
                             <input type="file" onchange="readURL(this, '#imageLogo2');" id="inputLogo2" name="logo2" style="opacity: 0; width: 0; height: 0;">
                             <label for="inputLogo2" class="button labelParcourir">Parcourir...</label>
-                            <button onclick="deleteImage('2')" type="button" class="button labelParcourir">Delete Image 2</button>
+                            <button onclick="deleteImage('2')" type="button" class="button labelParcourir">Effacer Image 2</button>
                         </div>
                         <img src="" id="imageLogo2" alt="" class="imageView">
                     </div>
@@ -104,10 +104,10 @@
             </form>
             
             <div class="containerButton">
-                <button onclick="fnExport('email')" class="button">Export email</button>
-                <button onclick="fnExport('photo')" class="button">Export photo</button>
-                <button onclick="fnDelete('email')" class="button">Delete mail</button>
-                <button onclick="fnDelete('photo')" class="button">Delete photo</button>
+                <button onclick="fnExport('email')" class="button">Exporter Email</button>
+                <button onclick="fnExport('photo')" class="button">Exporter Photo</button>
+                <button onclick="fnDelete('email')" class="button">Effacer Email</button>
+                <button onclick="fnDelete('photo')" class="button">Effacer Photo</button>
             </div>
         </div>
     </div>
@@ -122,7 +122,7 @@
     document.body.style.width = windowInnerWidth + "px"
     document.body.style.height = windowInnerHeight + "px"
 
-    const urlServer = "192.168.1.19"
+    const urlServer = "localhost"
     const portHttp = ":5000"
     const portws = ":8080"
 

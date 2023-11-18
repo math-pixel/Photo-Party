@@ -123,15 +123,16 @@
 
             let choiceValidationHtmlBalise;
             // * choix de la categories si il est en attente ou pas
+            // * Creation des elements "type"
             if (element.is_waiting == 0) {
                 parentSupreme = parentNoWaiting
                 choiceValidationHtmlBalise = `<div class="container-checkbox"><label class="control control-checkbox"><input type="checkbox" class="isAllow" onclick="getAllowValue(this)" ${checked}><div class="control_indicator"></div></label></div>`;
             }else{
                 parentSupreme =parentWaiting
-                choiceValidationHtmlBalise = `<div class="containerYesNo"><button onclick="setUpItem(this, true)">yes</button><button onclick="setUpItem(this, false)">no</button></div>`
+                choiceValidationHtmlBalise = `<div class="containerYesNo"><button onclick="setUpItem(this, true)">Oui</button><button onclick="setUpItem(this, false)">Non</button></div>`
             }
 
-            
+            // * insertion dans la partie en attente ou normal
             if (element.media.includes("mp4")) {
                 // include video media readeer
     
