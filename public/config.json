@@ -1,0 +1,7 @@
+{
+    "usernameAdmin" : "a",
+    "passwordAdmin" : "a",
+    "timeoutImageInformation" : 7000,
+    "nbImageBeforeImageInformation" : 0,
+    "ipServer" : "192.168.121.20"
+}
