@@ -200,7 +200,8 @@ wss.on("connection", webso => {
           con.query("DELETE FROM `photos` WHERE 1", (error, data, field) => {
             if (error) throw error;
 
-            console.log(data)
+            // console.log(data)
+            console.log("photo deleted")
           })
         }
 
@@ -213,7 +214,8 @@ wss.on("connection", webso => {
               sendMessageWebso(JSON.stringify({adminPanel : { alertErrorDeleteMail : true }}))
             }
 
-            console.log(data)
+            // console.log(data)
+            console.log("user deleted")
           })
         }
 
@@ -254,19 +256,22 @@ async function createZipArchive() {
 
 async function createCSVfileOfMAilList(){
   console.log("export email en cour")
-  con.query("SELECT `email` FROM `users` WHERE 1", (error, data, field) => {
-    if (error) throw error;
+    
+  con.query("SELECT `pseudo`,`email` FROM `users` WHERE 1", (error, data, field) => {
+    if (error) {console.log("error export email")};
+    
+    let rows = []
+    for (const currentData of data) {
+      
+      const tempData = JSON.parse(JSON.stringify(currentData))
+      rows.push([tempData.pseudo, tempData.email])
 
-
-    const jsonData = JSON.parse(JSON.stringify(data));
-  
-    fastcsv
-      .write(jsonData, { headers: true })
-      .on("finish", function() {
-        console.log("Write to mailing.csv successfully!");
-      })
-      .pipe(writeStream);
-
+    }
+    fastcsv.write(rows, { headers: true })
+    .on("finish", function() {
+      console.log("Write to mailing.csv successfully!");
+    })
+    .pipe(writeStream);
     
   })
 
@@ -307,7 +312,7 @@ app.post('/app', function(req, res) {
         if (err){
           res.redirect("/")
         };
-        
+        console.log(result)
         //* ##### if is already in db #####
         if(result[0] != undefined){
 
@@ -321,10 +326,9 @@ app.post('/app', function(req, res) {
             // console.log(result);
           });
 
-        }else{
+        }else if(email != undefined){
 
           // * add user to db
-
           query = creationQuery.insertQuery("users",  "`pseudo`, `email`" , `"${name}", "${email}"`)
           con.query(query, function (err, result, fields) {
             if (err){
@@ -333,6 +337,8 @@ app.post('/app', function(req, res) {
             // console.log(result);
           });
 
+        }else{
+          res.redirect("/")
         }
 
     });
