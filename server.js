@@ -16,7 +16,7 @@ const config = require(__dirname + "/public/config.json")
 const writeStream = fs.createWriteStream( __dirname + "/files/mailing.csv");
 // ? lib pour suppr tout les fichier d'un dossier
 const fsExtra = require('fs-extra')
-
+ 
 
 //! ############ Variable ############ 
 
