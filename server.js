@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const fastcsv = require("fast-csv");
 const fs = require("fs");
 const creationQuery = require( __dirname + "/database")
-const config = require(__dirname + "/public/config.json")
+require('dotenv').config()
 
 // console.log(__dirname)
 // ? pour exporter les email en csv
@@ -24,8 +24,8 @@ let query = "";
 let queueId = [];
 let loopMessageTimer;
 
-let adminName = config.usernameAdmin
-let adminMDP = config.passwordAdmin
+let adminName = process.env.USERNAME_ADMIN
+let adminMDP = process.env.PASSWORD_ADMIN
 
 let isAllowGlobal = true
 let isWaitingGlobal = false
@@ -62,6 +62,7 @@ var con = mysql.createConnection({
 
 //! ############ websocket ############ 
 const WebSocketServer = require('ws');
+const { error } = require('console');
 const wss = new WebSocketServer.Server({ port: 8080 })
 let ws = null
 
@@ -650,7 +651,7 @@ function loopMessage(){
     // set timer pour envoyer les data au video proj
     loopMessageTimer = setTimeout(() => {
 
-      if (nbImageDifuse === config.nbImageBeforeImageInformation && config.nbImageBeforeImageInformation != 0) {
+      if (nbImageDifuse === process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION && process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION != 0) {
         // * diffusion image inscription
         sendConnectionImageToProjo()
         nbImageDifuse = 0
@@ -674,7 +675,7 @@ function loopMessage(){
       clearTimeout(loopMessageTimer)
       loopMessage()
 
-    }, config.timeoutImageInformation);
+    }, process.env.TIMEOUT_IMAGE_INFORMATION);
     
 }
 
