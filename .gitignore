@@ -1,7 +1,6 @@
 # Photo-Party
 PhotoUpload/*
-PhotoUploadAdmin/
-public/
+PhotoUploadAdmin/logo*
 
 # Logs
 logs
