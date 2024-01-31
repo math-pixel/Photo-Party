@@ -354,7 +354,7 @@ app.post('/importingFile', (req , res) => {
 
   let commentaire = "";
   let pathCurrentImage = "";
-  let emailClient = req.body.emailfield
+  let emailClient = req.body.email
   let clientId = null
 
 

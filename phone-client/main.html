@@ -73,7 +73,8 @@
 
 
             <!-- pour rester connecter -->
-            <input type="text" id="emailfield" name="emailfield" style="opacity: 0; width: 0; height: 0;">
+            <input type="text" id="emailfield" name="email" style="opacity: 0; width: 0; height: 0;">
+            <input type="text" id="namefield" name="nom" style="opacity: 0; width: 0; height: 0;">
         </form>
     </div>
     <script>
@@ -130,6 +131,7 @@
         window.addEventListener( "load" ,(d)  => {
             console.log("page is fully loaded");
             document.querySelector("#emailfield").setAttribute('value', localStorage.getItem("email") ) 
+            document.querySelector("#namefield").setAttribute('value', localStorage.getItem("pseudo") ) 
         })
 
         // pour dimenssionner la page
