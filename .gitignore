@@ -2,6 +2,7 @@
 PhotoUpload/*
 PhotoUploadAdmin/logo*
 files/mailing*
+files/photos*
 
 # Logs
 logs
