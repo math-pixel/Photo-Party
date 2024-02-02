@@ -646,17 +646,14 @@ app.get('/projecteur', function (req, res) {
 
 
 let nbImageDifuse = 0
+let itsFirststart = true
 function loopMessage(){
 
     // set timer pour envoyer les data au video proj
     loopMessageTimer = setTimeout(() => {
 
-      console.log("nb image : ", process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION)
-      console.log("nb image diffuse : ", nbImageDifuse)
-
       if (nbImageDifuse == process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION && process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION != 0) {
         // * diffusion image inscription
-        console.log("send image")
         sendConnectionImageToProjo()
         nbImageDifuse = 0
       }else{
@@ -665,7 +662,13 @@ function loopMessage(){
         // * ############### si la queue est vide ###############
         if (queueId.length == 0) {
 
-          sendRandomImageToProjo()
+          //* si c'est le premier lancement && que on doit afficher l'image dinformation de connection
+          if (itsFirststart == true && process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION != 0) {
+            itsFirststart = false
+            sendConnectionImageToProjo()
+          }else{
+            sendRandomImageToProjo()
+          }
           
         }else{
 
