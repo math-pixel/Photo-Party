@@ -651,8 +651,12 @@ function loopMessage(){
     // set timer pour envoyer les data au video proj
     loopMessageTimer = setTimeout(() => {
 
-      if (nbImageDifuse === process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION && process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION != 0) {
+      console.log("nb image : ", process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION)
+      console.log("nb image diffuse : ", nbImageDifuse)
+
+      if (nbImageDifuse == process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION && process.env.NB_IMAGE_BEFORE_IMAGE_INFORMATION != 0) {
         // * diffusion image inscription
+        console.log("send image")
         sendConnectionImageToProjo()
         nbImageDifuse = 0
       }else{
