@@ -194,16 +194,27 @@ wss.on("connection", webso => {
         // ? admin parameter delete photo in folder and db
         else if (data.requestDeletePhoto) {
           
-          //? delete in folder
-          setEmptyDir( __dirname + "/PhotoUpload")
+          try{
 
-          // ? in db
-          con.query("DELETE FROM `photos` WHERE 1", (error, data, field) => {
-            if (error) throw error;
+            //? delete in folder
+            setEmptyDir( __dirname + "/PhotoUpload")
 
-            // console.log(data)
-            console.log("photo deleted")
-          })
+            // ? in db
+            con.query("DELETE FROM `photos` WHERE 1", (error, data, field) => {
+              // if (error) throw error;
+
+              // console.log(data)
+              console.log("photo deleted")
+            })
+
+            sendMessageWebso(JSON.stringify( { adminPanel : { photoDeleteSucces : true } } ))
+
+          }catch(error){
+            sendMessageWebso(JSON.stringify( { adminPanel : { photoDeleteError : true } } ))
+            console.log("error deleted photo : ", error )
+          }
+
+          
         }
 
         // ? admin parameter delete mail in db
@@ -213,10 +224,14 @@ wss.on("connection", webso => {
           con.query("DELETE FROM `users` WHERE 1", (error, data, field) => {
             if (error){
               sendMessageWebso(JSON.stringify({adminPanel : { alertErrorDeleteMail : true }}))
+            }else{
+              
+              // console.log(data)
+              console.log("user deleted")
+              sendMessageWebso(JSON.stringify({adminPanel : { alertDeleteMailSucces : true }}))
             }
 
-            // console.log(data)
-            console.log("user deleted")
+
           })
         }
 

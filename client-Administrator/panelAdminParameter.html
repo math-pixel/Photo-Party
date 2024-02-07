@@ -156,7 +156,11 @@
                 window.open(`http://${urlServer}${portHttp}/files/mailing.csv`)
             }
             else if(data.adminPanel.alertErrorDeleteMail){
-                alert("tu doit d'abord supprimer toute les images si tu veux supprimer les mails")
+                alert("Tu doit d'abord supprimer toutes les images si tu veux supprimer les mails")
+            }else if(data.adminPanel.alertDeleteMailSucces){
+                alert("Email Effacé")
+            }else if(data.adminPanel.photoDeleteSucces){
+                alert("Photo Effacé")
             }
 
         }
@@ -245,12 +249,10 @@
         switch (object) {
             case "email":
                 ws.send(JSON.stringify({requestDeleteEmail : true}))
-                alert("Email Effacé")
                 break;
 
             case "photo":
                 ws.send(JSON.stringify({requestDeletePhoto : true}))
-                alert("Photo Effacé")
                 break;
         
             default:
