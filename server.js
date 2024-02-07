@@ -414,7 +414,7 @@ app.post('/importingFile', (req , res) => {
           commentaire = req.body.comment
 
           // replace comm for sql error
-          commentaire.replace("'", '\'')
+          commentaire = commentaire.replace("'", '\"')
         }
 
 
@@ -426,13 +426,14 @@ app.post('/importingFile', (req , res) => {
 
           
 
-          // * ############### insert file in db ###############
+          // * ############### insert file and comment in db ###############
           query = creationQuery.insertQuery("photos",  "`user_id`, `media`, `commentary`, `is_allowed`, `is_waiting`" , `${clientId}, '${pathCurrentImage}', '${commentaire}', ${isAllowGlobal}, ${isWaitingGlobal}`)
           con.query(query, function (err, result, fields) {
             // write error in logfile
             if (err){
               // fs.writeFile("/log.txt", err)
               // res.redirect(307, "/")
+              console.log("error for insert file in db")
             }else{
 
   
