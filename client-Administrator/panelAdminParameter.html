@@ -40,6 +40,7 @@
             </svg>
     </div>
 
+    <video src="/files/anim_chargement.mov" muted autoplay loop class="waintingDownload" id="waintingDownload"></video>
 
     <div class="mainContainer">
 
@@ -147,9 +148,11 @@
                 setUp(data.adminPanel.setUpAdminParameter[0])
             }
             else if (data.adminPanel.downloadImages) {
+                document.getElementById("waintingDownload").style.opacity = 0
                 window.open(`http://${urlServer}${portHttp}/files/photos.zip`)
             }
             else if(data.adminPanel.downloadMail){
+                document.getElementById("waintingDownload").style.opacity = 0
                 window.open(`http://${urlServer}${portHttp}/files/mailing.csv`)
             }
             else if(data.adminPanel.alertErrorDeleteMail){
@@ -220,7 +223,8 @@
     })
 
     function fnExport(object){
-        alert("En cour de preparation ...")
+        // alert("En cour de preparation ...")
+        document.getElementById("waintingDownload").style.opacity = 1
         switch (object) {
             case "email":
                 ws.send(JSON.stringify({requestExportEmail : true}))
