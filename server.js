@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const fastcsv = require("fast-csv");
 const fs = require("fs");
 const creationQuery = require( __dirname + "/database")
-require('dotenv').config()
+require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 
 // console.log(__dirname)
 // ? pour exporter les email en csv
