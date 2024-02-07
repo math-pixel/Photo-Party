@@ -128,7 +128,8 @@
     max-width: 180px;
     max-height: 180px;
     display: inline-block;
-
+    width: 80%;
+    height: inherit;
     border-radius: 15px;
 }
 
