@@ -53,8 +53,7 @@ unzip, import and deploy database of "template database.zip" in localhost
 npm run server
 ```
 
-7) 
-In Webbrowser go to 
+7) In Webbrowser go to 
 ```bash 
 player => localhost:5000/ 
 admin => localhost:5000/admin
