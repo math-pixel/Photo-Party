@@ -43,12 +43,17 @@ duplicate and rename the ".env-example" > ".env"
 npm install
 ```
 
-5) 
+5)  
+```bash
+unzip, import and deploy database of "template database.zip" in localhost
+```
+
+6) 
 ```bash
 npm run server
 ```
 
-6) 
+7) 
 In Webbrowser go to 
 ```bash 
 player => localhost:5000/ 
