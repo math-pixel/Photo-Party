@@ -45,7 +45,7 @@
         const portHttp = ":5000"
         const portws = ":8080"
 
-        const ws = new WebSocket(`ws://${urlServer + portws}`);
+        const ws = new WebSocket(`wss://${urlServer + portws}`);
 
         ws.addEventListener("open", () =>{
           console.log("We are connected");
