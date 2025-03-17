@@ -25,13 +25,14 @@
         </div>
 
         <div class="containerQr">
-            <label class="labelWifi">Connectez-vous au wifi : <p class="lighting">Photo Party</p></label>
+            <!-- <label class="labelWifi">Connectez-vous au wifi : <p class="lighting">Photo Party</p></label> -->
             <label>Et scannez <br>ce Qr Code :</label>
-            <img src="http://localhost:5000/PhotoUploadAdmin/qrcode.png" alt="" class="qrcode">
+            <div id="qrcontainer" class="qrcode"></div>
+            <!-- <img src="http://localhost:5000/PhotoUploadAdmin/qrcode.png" alt="" class="qrcode"> -->
         </div>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script>
 
         // redimensionner la page
@@ -171,6 +172,35 @@
             h = img.naturalHeight || img.height;
             return (h > w);
         }
+
+        /* -------------------------------------------------------------------------- */
+        /*                                   QR Code                                  */
+        /* -------------------------------------------------------------------------- */
+        // Function to generate QR code
+        //Template = generateQRCode("containerID", 'localhost', '3000', parameters='param1=value1&param2=value2');
+        function generateQRCode(canvasContainerID, method, url, port, subdirectory = "", parameters = "") {
+
+            /* ------------------------------- Create URL ------------------------------- */
+            let qrCodeUrl = "error"
+            qrCodeUrl = `${method}://${url}:${port}/${subdirectory}${"?" + parameters}`;
+            console.log(qrCodeUrl)
+
+            /* ----------------------------- Generate QrCode ---------------------------- */
+            const qrCodeContainer = document.getElementById(canvasContainerID);
+
+            /* -------------------- Clear previous QR code if exists -------------------- */
+            qrCodeContainer.innerHTML = '';
+
+            /* ---------------------------- Generate QR code ---------------------------- */
+            new QRCode(qrCodeContainer, {
+                text: qrCodeUrl,
+                width: 200,
+                height: 200
+            });
+
+        }
+
+        generateQRCode("qrcontainer", "https", window.location.hostname, window.location.port)
 
     </script>
 </body>

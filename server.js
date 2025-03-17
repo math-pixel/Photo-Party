@@ -1,5 +1,4 @@
 const express = require('express');
-const port = 5000;
 const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
@@ -10,6 +9,8 @@ const fastcsv = require("fast-csv");
 const fs = require("fs");
 const creationQuery = require( __dirname + "/database")
 require('dotenv').config({ path: path.resolve(__dirname, './.env') })
+
+const port = process.env.HTTP_PORT || 5000;
 
 // console.log(__dirname)
 // ? pour exporter les email en csv
@@ -53,17 +54,17 @@ app.listen(port, () => {
 // bdd et query creation for bdd
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "photoparty"
+    host: process.env.BDD_HOST,
+    user: process.env.BDD_USER,
+    password: process.env.BDD_PASSWORD,
+    database: process.env.BDD_NAME
 });
-
+con.connect(function(err) {   if (err) throw err;   console.log("Connecté à la base de données MySQL!"); });
 
 //! ############ websocket ############ 
 const WebSocketServer = require('ws');
 const { error } = require('console');
-const wss = new WebSocketServer.Server({ port: 8080 })
+const wss = new WebSocketServer.Server({ port: process.env.WS_PORT || 8080 })
 let ws = null
 
 // stock all client for broadcast
