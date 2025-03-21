@@ -65,6 +65,7 @@ con.connect(function(err) {   if (err) throw err;   console.log("Connecté à la
 const WebSocketServer = require('ws');
 const { error } = require('console');
 const wss = new WebSocketServer.Server({ port: process.env.WS_PORT || 8080 })
+console.log("The WebSocket server is running on port :", process.env.WS_PORT || 8080 );
 let ws = null
 
 // stock all client for broadcast
@@ -245,7 +246,7 @@ wss.on("connection", webso => {
     });
 
 });
-console.log("The WebSocket server is running on port 8080");
+
 
 
 function sendMessageWebso(message){
